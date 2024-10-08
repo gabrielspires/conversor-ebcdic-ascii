@@ -1,5 +1,7 @@
 # Configura o AWS CLI
+printf "Configurando AWS CLI\n"
 printf $AWS_ACCESS_KEY'\n'$AWS_SECRET_ACCESS_KEY'\n'$AWS_REGION'\njson' | aws configure
+printf "\nOK\n"
 
 # Cria os diretórios pra bater com o caminho do arquivo no bucket pra facilitar
 mkdir -p $(dirname $EBCDIC_FILE)
