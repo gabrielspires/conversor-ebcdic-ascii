@@ -6,8 +6,7 @@ resource "aws_s3_bucket" "ebcdic-bucket" {
 
 # Sobe os arquivos cobol e ebcdic pro bucket de entrada
 resource "aws_s3_object" "source_code" {
-  bucket = aws_s3_bucket.ebcdic-bucket.id
-
+  bucket       = aws_s3_bucket.ebcdic-bucket.id
   for_each     = fileset("sample_data/", "**/*.*")
   key          = each.value
   source       = "sample_data/${each.value}"
@@ -33,7 +32,7 @@ resource "aws_lambda_permission" "allow_s3_invoke" {
 
 # Evento do bucket de entrada para acionar o Lambda em novos uploads
 resource "aws_s3_bucket_notification" "s3_notification" {
-  depends_on = [aws_s3_object.source_code]
+  depends_on = [aws_s3_object.source_code, aws_lambda_permission.allow_s3_invoke]
   bucket     = aws_s3_bucket.ebcdic-bucket.id
 
   lambda_function {

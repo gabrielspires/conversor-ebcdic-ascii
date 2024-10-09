@@ -8,3 +8,9 @@ variable "script_name" {
   type        = string
   default     = "container/push_image_to_ecr.sh"
 }
+
+variable "reference_copybook" {
+  description = "Nome do copybook de referencia pra tradução do ebcdic"
+  type        = string
+  default     = "COBVBFM2.cpy"
+}
