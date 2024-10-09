@@ -12,8 +12,6 @@ terraform {
 # Configurações do ambiente AWS
 provider "aws" {
   region = var.region
-  # access_key = ""
-  # secret_key = ""
 }
 
 # Recurso que gera um ID aleatório (útil pra criar id único de bucket)

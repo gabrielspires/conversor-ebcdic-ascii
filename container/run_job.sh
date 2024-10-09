@@ -1,16 +1,3 @@
-# printf $AWS_ACCESS_KEY'\n'
-# printf $AWS_SECRET_ACCESS_KEY'\n'
-# printf $AWS_REGION'\n'
-# printf $EBCDIC_BUCKET'\n'
-# printf $ASCII_BUCKET'\n'
-# printf $EBCDIC_FILE'\n'
-# printf $CPY_FILE'\n'
-
-# Configura o AWS CLI
-# printf "Configurando AWS CLI\n"
-# printf $AWS_ACCESS_KEY'\n'$AWS_SECRET_ACCESS_KEY'\n'$AWS_REGION'\njson' | aws configure
-# printf "\nOK\n"
-
 # Cria os diretórios pra bater com o caminho do arquivo no bucket pra facilitar
 mkdir -p $(dirname $EBCDIC_FILE)
 mkdir -p $(dirname $CPY_FILE)

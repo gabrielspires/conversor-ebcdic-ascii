@@ -1,9 +1,49 @@
-# output "instance_id" {
-#   description = "ID of the EC2 instance"
-#   value       = aws_instance.ebcdic_converter.id
-# }
+output "ebcdic_bucket" {
+  description = "Bucket que recebe os arquivos brutos"
+  value       = aws_s3_bucket.ebcdic-bucket.id
+}
 
-# output "instance_public_ip" {
-#   description = "Public IP address of the EC2 instance"
-#   value       = aws_instance.ebcdic_converter.public_ip
-# }
+output "ascii_bucket" {
+  description = "Bucket que guarda os arquivos convertidos pra ASCII"
+  value       = aws_s3_bucket.ascii_bucket.id
+}
+
+output "lambda_function" {
+  description = "Função Lambda que dispara a task no ECS"
+  value       = aws_lambda_function.ecs_trigger.function_name
+}
+
+output "default_vpc" {
+  description = "VPC padrão usada nos serviços criados"
+  value       = data.aws_vpc.default.id
+}
+
+output "default_subnets" {
+  description = "Subnets padrão usadas na VPC"
+  value       = data.aws_subnets.default.ids
+}
+
+output "sec_group" {
+  description = "Security Group usado na VPC"
+  value       = aws_security_group.ecs_security_group.id
+}
+
+output "ecr_repository" {
+  description = "Repositório de imagens criado no ECR"
+  value       = aws_ecr_repository.repositorio_ebcdic_ascii.id
+}
+
+output "ecs_service" {
+  description = "Serviço ECS criado pra task de conversão"
+  value       = aws_ecs_service.ecs_service.name
+}
+
+output "ecs_cluster" {
+  description = "Cluster ECS que contém as tasks definidas"
+  value       = aws_ecs_cluster.cluster_ebcdi_ascii.id
+}
+
+output "ecs_task" {
+  description = "Task do ECS que faz a conversão dos arquivos EBCDIC"
+  value       = aws_ecs_task_definition.conversor_ebcdic_ascii.id
+}
