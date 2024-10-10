@@ -50,14 +50,14 @@ resource "aws_iam_policy" "ecs_permissions" {
       {
         "Sid" : "VisualEditor1",
         "Effect" : "Allow",
-        "Action" : "s3:GetObject",
+        "Action" : ["s3:GetObject"],
         "Resource" : "${aws_s3_bucket.ebcdic-bucket.arn}/*"
       },
       {
         "Sid" : "VisualEditor2",
         "Effect" : "Allow",
-        "Action" : "s3:PutObject",
-        "Resource" : "${aws_s3_bucket.ascii_bucket.arn}/*"
+        "Action" : ["s3:PutObject"],
+        "Resource" : "${aws_s3_bucket.ebcdic-bucket.arn}/${aws_s3_object.output_key.key}*"
       }
     ]
   })

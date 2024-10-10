@@ -1,4 +1,3 @@
-# -------------------------- EBCDIC -------------------------- #
 # Bucket que recebe os arquivos EBCDIC
 resource "aws_s3_bucket" "ebcdic-bucket" {
   bucket = "${lower(terraform.workspace)}-ebcdic-bucket-${random_string.random_id.result}"
@@ -13,8 +12,26 @@ resource "aws_s3_object" "source_code" {
   content_type = each.value
 }
 
-# --------------------------- ASCII --------------------------- #
-# Bucket que guarda os arquivos convertidos pra ASCII
-resource "aws_s3_bucket" "ascii_bucket" {
-  bucket = "${lower(terraform.workspace)}-ascii-bucket-${random_string.random_id.result}"
+# Pastas padrão
+resource "aws_s3_object" "input_key" {
+  bucket = aws_s3_bucket.ebcdic-bucket.id
+  key    = "${var.input_folder}/"
+}
+
+resource "aws_s3_object" "output_key" {
+  bucket = aws_s3_bucket.ebcdic-bucket.id
+  key    = "${var.output_folder}/"
+}
+
+
+# Evento do bucket de entrada para acionar o Lambda em novos uploads
+resource "aws_s3_bucket_notification" "s3_notification" {
+  depends_on = [aws_s3_object.source_code, aws_lambda_permission.allow_s3_invoke]
+  bucket     = aws_s3_bucket.ebcdic-bucket.id
+
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.ecs_trigger.arn
+    events              = ["s3:ObjectCreated:*"]
+    filter_prefix       = aws_s3_object.input_key.key
+  }
 }

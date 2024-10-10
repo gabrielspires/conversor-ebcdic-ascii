@@ -12,5 +12,17 @@ variable "script_name" {
 variable "reference_copybook" {
   description = "Nome do copybook de referencia pra tradução do ebcdic"
   type        = string
-  default     = "COBVBFM2.cpy"
+  default     = "COBPACK3.cpy"
+}
+
+variable "input_folder" {
+  description = "Pasta no bucket que guarda os arquivos brutos (binarios)"
+  type        = string
+  default     = "binarios"
+}
+
+variable "output_folder" {
+  description = "Pasta no bucket que guarda os arquivos processados (ascii)"
+  type        = string
+  default     = "processados"
 }

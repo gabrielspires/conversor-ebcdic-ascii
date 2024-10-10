@@ -1,11 +1,6 @@
 output "ebcdic_bucket" {
-  description = "Bucket que recebe os arquivos brutos"
+  description = "Bucket que recebe os arquivos brutos e guarda os processados"
   value       = aws_s3_bucket.ebcdic-bucket.id
-}
-
-output "ascii_bucket" {
-  description = "Bucket que guarda os arquivos convertidos pra ASCII"
-  value       = aws_s3_bucket.ascii_bucket.id
 }
 
 output "lambda_function" {

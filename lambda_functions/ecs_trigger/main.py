@@ -10,7 +10,7 @@ def lambda_handler(event, context):
     # Separa os dados relevantes do evento recebido do s3
     s3_event = event["Records"][0]["s3"]
     bucket_name = s3_event["bucket"]["name"]
-    file_key = s3_event["object"]["key"]
+    file_key: str = s3_event["object"]["key"]
 
     # Define os parâmetros pra execução da task ECS
     cluster_name = os.getenv("CLUSTER_NAME")
@@ -40,6 +40,13 @@ def lambda_handler(event, context):
                             {
                                 "name": "CPY_FILE",
                                 "value": os.getenv("CPY_FILE"),
+                            },
+                            {
+                                "name": "OUTPUT_KEY",
+                                "value": file_key.replace(
+                                    os.getenv("INPUT_FOLDER"),
+                                    os.getenv("OUTPUT_FOLDER"),
+                                ),
                             },
                         ],
                     }

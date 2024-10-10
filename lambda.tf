@@ -18,9 +18,10 @@ resource "aws_lambda_function" "ecs_trigger" {
     variables = {
       CLUSTER_NAME    = aws_ecs_cluster.cluster_ebcdi_ascii.name
       TASK_DEFINITION = aws_ecs_task_definition.conversor_ebcdic_ascii.arn
-      ASCII_BUCKET    = aws_s3_bucket.ascii_bucket.id
       CPY_FILE        = var.reference_copybook
       SUBNET          = jsonencode("${data.aws_subnets.default.ids}")
+      INPUT_FOLDER    = "${var.input_folder}"
+      OUTPUT_FOLDER   = "${var.output_folder}"
     }
   }
 }

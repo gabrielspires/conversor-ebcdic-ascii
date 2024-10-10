@@ -49,10 +49,6 @@ resource "aws_ecs_task_definition" "conversor_ebcdic_ascii" {
         "essential" : true,
         "environment" : [
           {
-            "name" : "ASCII_BUCKET",
-            "value" : "${aws_s3_bucket.ascii_bucket.id}"
-          },
-          {
             "name" : "AWS_REGION",
             "value" : "${var.region}"
           },
