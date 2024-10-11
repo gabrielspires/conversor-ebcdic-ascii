@@ -1,16 +1,16 @@
 # Compacta a pasta com o código do script que dispara a task no ECS
-data "archive_file" "lambda_zip" {
+data "archive_file" "bin_to_ascii" {
   type        = "zip"
-  source_dir  = "${path.module}/lambda_functions/ecs_trigger"
-  output_path = "${path.module}/ecs_trigger.zip"
+  source_dir  = "${path.module}/lambda_functions/bin_to_ascii"
+  output_path = "${path.module}/lambda_functions/bin_to_ascii.zip"
 }
 
 # Cria a função Lambda que dispara a task no ECS usando o código zipado
-resource "aws_lambda_function" "ecs_trigger" {
-  filename      = data.archive_file.lambda_zip.output_path
-  function_name = "ecs_trigger"
+resource "aws_lambda_function" "bin_to_ascii" {
+  filename      = data.archive_file.bin_to_ascii.output_path
+  function_name = "bin_to_ascii"
   role          = aws_iam_role.lambda_role.arn
-  handler       = "main.lambda_handler"
+  handler       = "main.run_task"
   runtime       = "python3.9"
   timeout       = 59
 
@@ -21,6 +21,7 @@ resource "aws_lambda_function" "ecs_trigger" {
       CPY_FILE        = var.reference_copybook
       SUBNET          = jsonencode("${data.aws_subnets.default.ids}")
       INPUT_FOLDER    = "${var.input_folder}"
+      PARTS_FOLDER    = "${var.partitioned_folder}"
       OUTPUT_FOLDER   = "${var.output_folder}"
     }
   }

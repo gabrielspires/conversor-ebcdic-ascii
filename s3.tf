@@ -18,20 +18,36 @@ resource "aws_s3_object" "input_key" {
   key    = "${var.input_folder}/"
 }
 
+resource "aws_s3_object" "partitioned_key" {
+  bucket = aws_s3_bucket.ebcdic-bucket.id
+  key    = "${var.partitioned_folder}/"
+}
+
 resource "aws_s3_object" "output_key" {
   bucket = aws_s3_bucket.ebcdic-bucket.id
   key    = "${var.output_folder}/"
 }
 
 
-# Evento do bucket de entrada para acionar o Lambda em novos uploads
-resource "aws_s3_bucket_notification" "s3_notification" {
+# Evento do bucket de entrada para acionar o Lambda
+resource "aws_s3_bucket_notification" "raw_file_uploaded" {
   depends_on = [aws_s3_object.source_code, aws_lambda_permission.allow_s3_invoke]
   bucket     = aws_s3_bucket.ebcdic-bucket.id
 
   lambda_function {
-    lambda_function_arn = aws_lambda_function.ecs_trigger.arn
+    lambda_function_arn = aws_lambda_function.bin_to_ascii.arn
     events              = ["s3:ObjectCreated:*"]
     filter_prefix       = aws_s3_object.input_key.key
+  }
+}
+
+resource "aws_s3_bucket_notification" "binary_part_created" {
+  depends_on = [aws_s3_object.source_code, aws_lambda_permission.allow_s3_invoke]
+  bucket     = aws_s3_bucket.ebcdic-bucket.id
+
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.bin_to_ascii.arn
+    events              = ["s3:ObjectCreated:*"]
+    filter_prefix       = aws_s3_object.partitioned_key.key
   }
 }

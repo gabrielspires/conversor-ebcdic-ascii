@@ -1,12 +1,13 @@
 variable "region" {
-  default     = "us-east-1"
   description = "Região em que será provisionada a infra AWS"
+  type        = string
+  default     = "us-east-1"
 }
 
-variable "script_name" {
-  description = "Name of the script to run after task creation"
+variable "push_bin_to_ascii_image_to_ecr" {
+  description = "Nome do script que sobe a imagem docker pro ECR"
   type        = string
-  default     = "container/push_image_to_ecr.sh"
+  default     = "containers/bin_to_ascii/push_image_to_ecr.sh"
 }
 
 variable "reference_copybook" {
@@ -19,6 +20,12 @@ variable "input_folder" {
   description = "Pasta no bucket que guarda os arquivos brutos (binarios)"
   type        = string
   default     = "binarios"
+}
+
+variable "partitioned_folder" {
+  description = "Pasta no bucket que guarda os arquivos separados em chunks"
+  type        = string
+  default     = "particionados"
 }
 
 variable "output_folder" {

@@ -16,13 +16,9 @@ FROM python:3.12.7
 ENV APP_HOME=/app
 
 # Variáveis de ambiente que tem que ser passadas pro container
-ENV AWS_ACCESS_KEY=""
-ENV AWS_SECRET_ACCESS_KEY=""
-ENV AWS_REGION=""
 ENV EBCDIC_BUCKET=""
 ENV EBCDIC_FILE=""
 ENV CPY_FILE=""
-ENV ASCII_BUCKET=""
 
 # Copia os programas Python, o script bash que roda os comandos e as credenciais
 ADD ebcdic_converter ${APP_HOME}
