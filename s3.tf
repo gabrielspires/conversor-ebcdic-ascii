@@ -30,7 +30,7 @@ resource "aws_s3_object" "output_key" {
 
 
 # Evento do bucket de entrada para acionar o Lambda
-resource "aws_s3_bucket_notification" "raw_file_uploaded" {
+resource "aws_s3_bucket_notification" "binary_file_created" {
   depends_on = [aws_s3_object.source_code, aws_lambda_permission.allow_s3_invoke]
   bucket     = aws_s3_bucket.ebcdic-bucket.id
 
@@ -39,11 +39,6 @@ resource "aws_s3_bucket_notification" "raw_file_uploaded" {
     events              = ["s3:ObjectCreated:*"]
     filter_prefix       = aws_s3_object.input_key.key
   }
-}
-
-resource "aws_s3_bucket_notification" "binary_part_created" {
-  depends_on = [aws_s3_object.source_code, aws_lambda_permission.allow_s3_invoke]
-  bucket     = aws_s3_bucket.ebcdic-bucket.id
 
   lambda_function {
     lambda_function_arn = aws_lambda_function.bin_to_ascii.arn

@@ -57,6 +57,12 @@ resource "aws_iam_policy" "ecs_permissions" {
         "Sid" : "VisualEditor2",
         "Effect" : "Allow",
         "Action" : ["s3:PutObject"],
+        "Resource" : "${aws_s3_bucket.ebcdic-bucket.arn}/${aws_s3_object.partitioned_key.key}*"
+      },
+      {
+        "Sid" : "VisualEditor3",
+        "Effect" : "Allow",
+        "Action" : ["s3:PutObject"],
         "Resource" : "${aws_s3_bucket.ebcdic-bucket.arn}/${aws_s3_object.output_key.key}*"
       }
     ]

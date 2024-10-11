@@ -52,12 +52,20 @@ def run_task(event, context):
                         "name": "conversor-ebcdic-ascii",
                         "environment": [
                             {"name": "FUNCTION", "value": task_to_run},
-                            {"name": "PART_SIZE_MB", "value": 100},
+                            {"name": "PART_SIZE_MB", "value": "100"},
                             {"name": "EBCDIC_BUCKET", "value": bucket_name},
                             {"name": "EBCDIC_FILE", "value": file_key},
                             {
                                 "name": "CPY_FILE",
                                 "value": os.getenv("CPY_FILE"),
+                            },
+                            {
+                                "name": "INPUT_FOLDER",
+                                "value": os.getenv("INPUT_FOLDER"),
+                            },
+                            {
+                                "name": "PARTS_FOLDER",
+                                "value": os.getenv("PARTS_FOLDER"),
                             },
                             {
                                 "name": "OUTPUT_KEY",

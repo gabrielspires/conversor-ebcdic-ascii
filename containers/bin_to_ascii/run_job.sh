@@ -11,10 +11,16 @@ python3 parse_copybook_to_json.py -copybook $CPY_FILE -output $CPY_FILE.json -eb
 
 if [ $FUNCTION = "DIVIDE" ]; then
     echo "Executando função de divisão"
+
+    # Lê o arquivo binário e divide ele em partes menores
     python3 divide_binary_file.py $CPY_FILE.json $PART_SIZE_MB
-    aws s3 cp binary_parts/ s3://$EBCDIC_BUCKET/$PARTS_FOLDER/ --recursive
+
+    # Copia as partes criadas pro bucket de arquivos particionados
+    aws s3 cp binary_parts/$INPUT_FOLDER/ s3://$EBCDIC_BUCKET/$PARTS_FOLDER/ --recursive
 elif [ $FUNCTION = "CONVERT" ]; then
     echo "Executando função de conversão"
+
+    # Abre o arquivo binário e converte ele pra ascii
     python3 extract_ebcdic_to_ascii.py -local-json $CPY_FILE.json
 
     # Envia o arquivo convertido pro s3
