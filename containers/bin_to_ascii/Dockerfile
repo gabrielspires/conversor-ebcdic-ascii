@@ -35,7 +35,7 @@ RUN unzip awscliv2.zip
 RUN ./aws/install
 
 # Biblioteca Python necessária pros scripts
-RUN pip install boto3
+RUN pip install boto3 pyarrow fastparquet
 
 # Seta a pasta padrão
 WORKDIR ${APP_HOME}
