@@ -13,7 +13,7 @@ if [ $FUNCTION = "DIVIDE" ]; then
     echo "Executando função de divisão"
 
     # Lê o arquivo binário e divide ele em partes menores
-    python3 divide_binary_file.py $CPY_FILE.json $PART_SIZE_MB
+    python3 _divide_binary_file.py $CPY_FILE.json $PART_SIZE_MB
 
     # Copia as partes criadas pro bucket de arquivos particionados
     aws s3 cp binary_parts/$INPUT_FOLDER/ s3://$EBCDIC_BUCKET/$PARTS_FOLDER/ --recursive
@@ -23,6 +23,6 @@ elif [ $FUNCTION = "CONVERT" ]; then
     # Abre o arquivo binário e converte ele pra ascii
     python3 extract_ebcdic_to_ascii.py -local-json $CPY_FILE.json
 
-    # Envia o arquivo convertido pro s3
-    aws s3 cp $EBCDIC_FILE"_ascii.csv" s3://$EBCDIC_BUCKET/$OUTPUT_KEY"_ascii.csv"
+    # Converte o arquivo ascii pra parquet e sobe no S3
+    python3 _csv_to_parquet.py $CPY_FILE.json
 fi
