@@ -1,6 +1,7 @@
 import os
 import sys
 import json
+import boto3
 
 
 def split_binary_file(
@@ -13,6 +14,7 @@ def split_binary_file(
     lines_per_file = mb_per_chunk // bytes_per_line
     chunk_size = lines_per_file * bytes_per_line
 
+    filename = os.path.basename(input_file)
     file_size = os.path.getsize(input_file)
     num_chunks = (file_size // chunk_size) + (file_size % chunk_size > 0)
 
@@ -28,11 +30,14 @@ def split_binary_file(
             if not chunk:
                 break
 
-            output_filename = f"{os.path.basename(input_file)}_part{chunk_num}"
+            part_num = str(chunk_num).zfill(len(str(num_chunks)))
+            output_filename = (
+                f"{filename}_parte_{part_num}_de_{num_chunks}.bin"
+            )
             with open(f"{output_dir}/{output_filename}", "wb") as chunk_file:
                 chunk_file.write(chunk)
                 print(
-                    f"Chunk {str(chunk_num).zfill(len(str(num_chunks)))}/{num_chunks} saved:",
+                    f"Chunk {part_num}/{num_chunks} saved:",
                     output_filename,
                 )
 
