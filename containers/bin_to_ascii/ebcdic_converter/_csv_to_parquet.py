@@ -17,7 +17,7 @@ def csv_to_parquet():
 
     s3_url = f"s3://{bucket_name}/{output_key}.parquet"
 
-    df = pd.read_csv(ascii_file, sep="|")
+    df = pd.read_csv(ascii_file, sep="|", header=None)
     try:
         df.to_parquet(s3_url, index=False)
     except Exception as e:
