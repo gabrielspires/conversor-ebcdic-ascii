@@ -23,6 +23,7 @@ resource "aws_lambda_function" "bin_to_ascii" {
       INPUT_FOLDER    = "${var.input_folder}"
       PARTS_FOLDER    = "${var.partitioned_folder}"
       OUTPUT_FOLDER   = "${var.output_folder}"
+      FILE_SIZE_LIMIT = "${var.file_size_limit * 1024 * 1024}"
     }
   }
 }

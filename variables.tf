@@ -33,3 +33,9 @@ variable "output_folder" {
   type        = string
   default     = "processados"
 }
+
+variable "file_size_limit" {
+  description = "Tamanho (MB) máximo que um arquivo pode ter para ser processado sem particionamento"
+  type        = number
+  default     = 200
+}
