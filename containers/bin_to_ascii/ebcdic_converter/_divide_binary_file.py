@@ -4,15 +4,13 @@ import json
 import boto3
 
 
-def split_binary_file(
-    input_file: str, output_dir: str, bytes_per_line: int, mb_per_chunk: int
-):
+def split_binary_file(input_file: str, output_dir: str, bytes_per_line: int, mb_per_chunk: int):
     # Define o diretório onde guardar os arquivos divididos e cria as pastas
     output_dir = f"{output_dir}/{os.path.dirname(input_file)}"
     os.makedirs(output_dir, exist_ok=True)
 
     # Multiplica a quantidade de MB pela quantidade certa de bytes (2^20)
-    mb_per_chunk *= 1024**2
+    # mb_per_chunk *= 1024**2
 
     # Calcula quantas linhas cada arquivo deve ter e o tamanho dos chunks
     lines_per_file = mb_per_chunk // bytes_per_line
@@ -58,9 +56,7 @@ def main():
     with open(json_file) as jf:
         cpy_dict = json.load(jf)
 
-        split_binary_file(
-            cpy_dict["input"], "binary_parts", cpy_dict["lrecl"], part_size_mb
-        )
+        split_binary_file(cpy_dict["input"], "binary_parts", cpy_dict["lrecl"], part_size_mb)
 
 
 if __name__ == "__main__":
