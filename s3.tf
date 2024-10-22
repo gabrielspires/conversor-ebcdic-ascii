@@ -35,14 +35,20 @@ resource "aws_s3_bucket_notification" "binary_file_created" {
   bucket     = aws_s3_bucket.ebcdic-bucket.id
 
   lambda_function {
-    lambda_function_arn = aws_lambda_function.bin_to_ascii.arn
+    lambda_function_arn = aws_lambda_function.bin_to_parquet.arn
     events              = ["s3:ObjectCreated:*"]
     filter_prefix       = aws_s3_object.input_key.key
   }
 
   lambda_function {
-    lambda_function_arn = aws_lambda_function.bin_to_ascii.arn
+    lambda_function_arn = aws_lambda_function.bin_to_parquet.arn
     events              = ["s3:ObjectCreated:*"]
     filter_prefix       = aws_s3_object.partitioned_key.key
   }
+
+  # lambda_function {
+  #   lambda_function_arn = aws_lambda_function.bin_to_parquet.arn
+  #   events              = ["s3:ObjectCreated:*"]
+  #   filter_prefix       = aws_s3_object.output_key.key
+  # }
 }

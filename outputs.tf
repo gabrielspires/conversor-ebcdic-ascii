@@ -5,7 +5,7 @@ output "ebcdic_bucket" {
 
 output "lambda_function" {
   description = "Função Lambda que dispara a task no ECS"
-  value       = aws_lambda_function.bin_to_ascii.function_name
+  value       = aws_lambda_function.bin_to_parquet.function_name
 }
 
 output "default_vpc" {

@@ -37,7 +37,7 @@ resource "aws_ecs_task_definition" "conversor_ebcdic_ascii" {
 
   # Roda o script que faz o build da imagem Docker e sobe no repositório ECR
   provisioner "local-exec" {
-    command     = "bash ${var.push_bin_to_ascii_image_to_ecr} ${aws_ecr_repository.repositorio_ebcdic_ascii.repository_url} ${var.region}"
+    command     = "bash ${var.push_bin_to_parquet_image_to_ecr} ${aws_ecr_repository.repositorio_ebcdic_ascii.repository_url} ${var.region}"
     working_dir = path.module
   }
 

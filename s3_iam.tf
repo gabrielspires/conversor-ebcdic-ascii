@@ -4,5 +4,5 @@ resource "aws_lambda_permission" "allow_s3_invoke" {
   principal     = "s3.amazonaws.com"
   statement_id  = "AllowS3Invoke"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.bin_to_ascii.function_name
+  function_name = aws_lambda_function.bin_to_parquet.function_name
 }

@@ -4,10 +4,10 @@ variable "region" {
   default     = "us-east-1"
 }
 
-variable "push_bin_to_ascii_image_to_ecr" {
+variable "push_bin_to_parquet_image_to_ecr" {
   description = "Nome do script que sobe a imagem docker pro ECR"
   type        = string
-  default     = "containers/bin_to_ascii/push_image_to_ecr.sh"
+  default     = "containers/bin_to_parquet/push_image_to_ecr.sh"
 }
 
 variable "reference_copybook" {
