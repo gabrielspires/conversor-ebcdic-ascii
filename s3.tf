@@ -6,9 +6,9 @@ resource "aws_s3_bucket" "ebcdic-bucket" {
 # Sobe os arquivos cobol e ebcdic pro bucket de entrada
 resource "aws_s3_object" "source_code" {
   bucket       = aws_s3_bucket.ebcdic-bucket.id
-  for_each     = fileset("sample_data/", "**/*.*")
+  for_each     = fileset("src/", "**/*.*")
   key          = each.value
-  source       = "sample_data/${each.value}"
+  source       = "src/${each.value}"
   content_type = each.value
 }
 
@@ -30,9 +30,15 @@ resource "aws_s3_object" "output_key" {
 
 
 # Evento do bucket de entrada para acionar o Lambda
-resource "aws_s3_bucket_notification" "binary_file_created" {
-  depends_on = [aws_s3_object.source_code, aws_lambda_permission.allow_s3_invoke]
-  bucket     = aws_s3_bucket.ebcdic-bucket.id
+resource "aws_s3_bucket_notification" "file_created" {
+  depends_on = [
+    aws_s3_object.source_code,
+    aws_lambda_permission.allow_s3_invoke_lambda_converter,
+    aws_lambda_permission.allow_s3_invoke_lambda_glue,
+    aws_lambda_function.send_binary_to_glue,
+    aws_lambda_function.bin_to_parquet
+  ]
+  bucket = aws_s3_bucket.ebcdic-bucket.id
 
   lambda_function {
     lambda_function_arn = aws_lambda_function.bin_to_parquet.arn
@@ -46,9 +52,10 @@ resource "aws_s3_bucket_notification" "binary_file_created" {
     filter_prefix       = aws_s3_object.partitioned_key.key
   }
 
-  # lambda_function {
-  #   lambda_function_arn = aws_lambda_function.bin_to_parquet.arn
-  #   events              = ["s3:ObjectCreated:*"]
-  #   filter_prefix       = aws_s3_object.output_key.key
-  # }
+  lambda_function {
+    lambda_function_arn = aws_lambda_function.send_binary_to_glue.arn
+    events              = ["s3:ObjectCreated:*"]
+    filter_prefix       = aws_s3_object.output_key.key
+    filter_suffix       = ".parquet"
+  }
 }

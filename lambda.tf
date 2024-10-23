@@ -12,7 +12,7 @@ resource "aws_lambda_function" "bin_to_parquet" {
   role          = aws_iam_role.lambda_ecs_role.arn
   handler       = "main.run_task"
   runtime       = "python3.9"
-  timeout       = 59
+  timeout       = 60
 
   environment {
     variables = {
@@ -28,8 +28,25 @@ resource "aws_lambda_function" "bin_to_parquet" {
   }
 }
 
+# Compacta a pasta com o código do script que envia os arquivos pro Glue
+data "archive_file" "parquet_to_glue" {
+  type        = "zip"
+  source_dir  = "${path.module}/lambda_functions/parquet_to_glue"
+  output_path = "${path.module}/lambda_functions/parquet_to_glue.zip"
+}
+
 resource "aws_lambda_function" "send_binary_to_glue" {
-  function_name = "inicia-processo-glue-autorizador"
-  role          = "value"
+  filename      = data.archive_file.parquet_to_glue.output_path
+  function_name = "inicia_processo_glue_autorizador"
+  role          = aws_iam_role.lambda_glue_role.arn
+  handler       = "main.lambda_handler"
+  runtime       = "python3.9"
+  timeout       = 60
+
+  environment {
+    variables = {
+      ENV = ""
+    }
+  }
 
 }

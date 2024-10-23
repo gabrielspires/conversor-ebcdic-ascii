@@ -13,7 +13,7 @@ def run_task(event, context):
     origin = file_key.split("/")[0]
 
     # Dispara uma função diferente dependendo de onde o arquivo veio
-    if origin == os.getenv("INPUT_FOLDER") and file_size > int(os.getenv("FILE_SIZE_LIMIT")):
+    if origin == os.getenv("INPUT_FOLDER"):
         task_to_run = "DIVIDE"
     else:
         task_to_run = "CONVERT"

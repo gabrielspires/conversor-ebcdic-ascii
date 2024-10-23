@@ -67,7 +67,6 @@ resource "aws_iam_policy" "ecs_permissions" {
       }
     ]
   })
-
 }
 
 # ------------------------ Attachments ------------------------ #
